@@ -1,0 +1,84 @@
+.about-page {
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 50px 40px;
+  background: #0f172a;
+  color: #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+  animation: fadeScale 1s ease;
+}
+
+/* Soft glow background effect */
+.about-page::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.12),
+    transparent 60%
+  );
+  animation: rotateGlow 12s linear infinite;
+}
+
+/* Title */
+.about-page h2 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #22c55e;
+  position: relative;
+  z-index: 1;
+}
+
+/* Description */
+.about-page p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #cbd5f5;
+  position: relative;
+  z-index: 1;
+}
+
+/* Animations */
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotateGlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-page {
+    margin: 40px 15px;
+    padding: 30px 25px;
+  }
+
+  .about-page h2 {
+    font-size: 28px;
+  }
+
+  .about-page p {
+    font-size: 15px;
+  }
+}

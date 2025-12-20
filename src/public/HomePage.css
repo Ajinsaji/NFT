@@ -1,0 +1,211 @@
+/* Root page */
+.home-page {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #1f2933;
+}
+
+/* ================= HERO SECTION ================= */
+
+.home-hero {
+  min-height: 85vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #020617);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.home-hero h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  animation: slideDown 1s ease-out;
+}
+
+.home-hero p {
+  max-width: 700px;
+  font-size: 18px;
+  opacity: 0.9;
+  margin-bottom: 30px;
+  animation: slideUp 1.2s ease-out;
+}
+
+/* Hero buttons */
+.home-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.home-actions .btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #22c55e;
+  color: #020617;
+}
+
+.btn-primary:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #94a3b8;
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ================= STATS SECTION ================= */
+
+.home-stats {
+  max-width: 1100px;
+  margin: -60px auto 40px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeUp 1s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.stat-card p {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* ================= INFO SECTION ================= */
+
+.home-info {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+  animation: fadeIn 1.3s ease-in-out;
+}
+
+.home-info h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.home-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.home-info li {
+  background: #f8fafc;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease;
+}
+
+.home-info li:hover {
+  transform: translateX(6px);
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .home-hero h1 {
+    font-size: 32px;
+  }
+
+  .home-hero p {
+    font-size: 16px;
+  }
+
+  .home-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .home-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
