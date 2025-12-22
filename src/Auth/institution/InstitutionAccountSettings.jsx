@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StudentHeader from "../components/StudentHeader";
-import "./Profile.css";
+import InstitutionHeader from "../../components/InstitutionHeader";
+import "../institution/Institution.css";
 
-const AccountSettings = () => {
+const InstitutionAccountSettings = () => {
   const navigate = useNavigate();
   const stored = JSON.parse(localStorage.getItem("user") || "{}");
   const [oldPwd, setOldPwd] = useState("");
@@ -36,12 +36,12 @@ const AccountSettings = () => {
 
   return (
     <>
-      <StudentHeader />
+      <InstitutionHeader />
 
-      <div className="profile-wrapper">
-        <h2 className="profile-title">Account Settings</h2>
+      <div className="inst-wrapper">
+        <h2 className="inst-title">Account Settings</h2>
 
-        <div className="profile-card">
+        <div className="inst-card">
           <form onSubmit={handleChangePassword}>
             <div>
               <label>
@@ -75,4 +75,4 @@ const AccountSettings = () => {
   );
 };
 
-export default AccountSettings;
+export default InstitutionAccountSettings;

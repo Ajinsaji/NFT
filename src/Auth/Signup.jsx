@@ -1,23 +1,24 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 const Signup = () => {
   const navigate = useNavigate();
 
   const [role, setRole] = useState("STUDENT");
-
   const [name, setName] = useState("");
-  const [institutionName, setInstitutionName] = useState("");
-
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [licenseFile, setLicenseFile] = useState(null);
 
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
-  const handleSignup = async () => {
+  const handleSignup = () => {
     setError("");
 
     if (password !== confirmPassword) {
@@ -25,35 +26,55 @@ const Signup = () => {
       return;
     }
 
-    setLoading(true);
-
-    try {
-      const mockUser = {
-        role,
-        name: role === "STUDENT" ? name : institutionName,
-        email,
-      };
-
-      localStorage.setItem("token", "mock-token");
-      localStorage.setItem("user", JSON.stringify(mockUser));
-
-      if (role === "INSTITUTION") {
-        navigate("/institution-dashboard");
-      } else {
-        navigate("/student-dashboard");
+    /* ================= INSTITUTION SIGNUP ================= */
+    if (role === "INSTITUTION") {
+      if (!licenseFile) {
+        setError("Institution license is required");
+        return;
       }
-    } catch (err) {
-      setError(err?.message || "Signup failed");
-    } finally {
-      setLoading(false);
+
+      const requests =
+        JSON.parse(localStorage.getItem("institutionRequests")) || [];
+
+      requests.push({
+        id: Date.now(),
+        name,
+        email,
+        license: licenseFile.name,
+        status: "PENDING",
+      });
+
+      localStorage.setItem(
+        "institutionRequests",
+        JSON.stringify(requests)
+      );
+
+      setSubmitted(true);
+      setShowPopup(true);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2500);
+
+      return;
     }
+
+    /* ================= STUDENT SIGNUP ================= */
+    // basic validation
+    if (!name || !email || !password) {
+      setError("Name, email and password are required");
+      return;
+    }
+
+    const student = { name, email, phone, dob, password, role: "STUDENT" };
+    localStorage.setItem("user", JSON.stringify(student));
+    navigate("/student-dashboard");
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
         <h2>Create Account</h2>
-        <p>{role === "STUDENT" ? "Student registration" : "Institution registration"}</p>
 
         {error && <p className="error">{error}</p>}
 
@@ -62,36 +83,79 @@ const Signup = () => {
           <option value="INSTITUTION">Institution</option>
         </select>
 
+        <input
+          placeholder={role === "INSTITUTION" ? "Institution Name" : "Full Name"}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <input
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
         {role === "STUDENT" && (
-          <input
-            placeholder="Student Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <>
+            <input
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+
+            <input
+              type="date"
+              placeholder="Date of Birth"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+            />
+          </>
         )}
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
         {role === "INSTITUTION" && (
           <input
-            placeholder="Institution Name"
-            value={institutionName}
-            onChange={(e) => setInstitutionName(e.target.value)}
+            type="file"
+            accept=".pdf,.jpg,.png"
+            onChange={(e) => setLicenseFile(e.target.files[0])}
           />
         )}
 
-        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-
-        <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-
-        <button className="btn btn-primary" onClick={handleSignup} disabled={loading}>
-          {loading ? "Creating..." : "Sign Up"}
+        <button
+          className={`btn btn-primary ${submitted ? "btn-pending" : ""}`}
+          onClick={handleSignup}
+          disabled={submitted}
+        >
+          {submitted ? "⏳ Pending Approval" : "Submit"}
         </button>
-
-        <p className="auth-footer">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
       </div>
+
+      {/* ================= POPUP ================= */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup-card">
+            <h3>✅ Request Submitted</h3>
+            <p>
+              Your institution request has been submitted successfully.
+              <br />
+              Please wait for admin approval.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

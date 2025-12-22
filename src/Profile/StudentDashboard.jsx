@@ -26,6 +26,10 @@ const StudentDashboard = () => {
             My Profile
           </Link>
 
+          <Link to="/student-certificates" className="profile-link">
+            My Certificates
+          </Link>
+
           <Link to="/account-settings" className="profile-link">
             Account Settings
           </Link>

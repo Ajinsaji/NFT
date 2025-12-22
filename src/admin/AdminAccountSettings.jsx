@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StudentHeader from "../components/StudentHeader";
-import "./Profile.css";
+import AdminHeader from "../components/AdminHeader";
+import "./Admin.css";
 
-const AccountSettings = () => {
+const AdminAccountSettings = () => {
   const navigate = useNavigate();
-  const stored = JSON.parse(localStorage.getItem("user") || "{}");
+  const stored = JSON.parse(localStorage.getItem("admin") || "{}");
   const [oldPwd, setOldPwd] = useState("");
   const [newPwd, setNewPwd] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
@@ -17,7 +17,7 @@ const AccountSettings = () => {
 
   const handleChangePassword = (e) => {
     e.preventDefault();
-    const current = stored.password || "password";
+    const current = stored.password || "admin";
     if (oldPwd !== current) {
       alert("Old password is incorrect");
       return;
@@ -27,21 +27,21 @@ const AccountSettings = () => {
       return;
     }
     const updated = { ...stored, password: newPwd };
-    localStorage.setItem("user", JSON.stringify(updated));
+    localStorage.setItem("admin", JSON.stringify(updated));
     setOldPwd("");
     setNewPwd("");
     setConfirmPwd("");
-    alert("Password updated");
+    alert("Admin password updated");
   };
 
   return (
     <>
-      <StudentHeader />
+      <AdminHeader />
 
-      <div className="profile-wrapper">
-        <h2 className="profile-title">Account Settings</h2>
+      <div className="admin-wrapper">
+        <h2 className="admin-title">Account Settings</h2>
 
-        <div className="profile-card">
+        <div className="admin-card">
           <form onSubmit={handleChangePassword}>
             <div>
               <label>
@@ -75,4 +75,4 @@ const AccountSettings = () => {
   );
 };
 
-export default AccountSettings;
+export default AdminAccountSettings;

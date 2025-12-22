@@ -1,45 +1,36 @@
 import React, { useState } from "react";
-import StudentHeader from "../components/StudentHeader";
-import "./Profile.css";
+import AdminHeader from "../components/AdminHeader";
+import "./Admin.css";
 
-const StudentProfile = () => {
-  const stored = JSON.parse(localStorage.getItem("user") || "{}");
+const AdminProfile = () => {
+  const stored = JSON.parse(localStorage.getItem("admin") || "{}" );
   const [user, setUser] = useState(stored);
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(user.name || "");
   const [email, setEmail] = useState(user.email || "");
   const [phone, setPhone] = useState(user.phone || "");
-  const [dob, setDob] = useState(user.dob || "");
 
   const handleSave = () => {
-    const updated = {
-      ...user,
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      dob: dob,
-    };
-    localStorage.setItem("user", JSON.stringify(updated));
+    const updated = { ...user, name: name.trim(), email: email.trim(), phone: phone.trim() };
+    localStorage.setItem("admin", JSON.stringify(updated));
     setUser(updated);
     setEditing(false);
-    alert("Profile updated");
+    alert("Admin profile updated");
   };
 
   return (
     <>
-      <StudentHeader />
+      <AdminHeader />
 
-      <div className="profile-wrapper">
-        <h2 className="profile-title">My Profile</h2>
+      <div className="admin-wrapper">
+        <h2 className="admin-title">My Profile</h2>
 
-        <div className="profile-card">
+        <div className="admin-card">
           {!editing ? (
             <>
               <p><strong>Name:</strong> {user.name || "-"}</p>
               <p><strong>Email:</strong> {user.email || "-"}</p>
               <p><strong>Phone:</strong> {user.phone || "-"}</p>
-              <p><strong>DOB:</strong> {user.dob || "-"}</p>
-              <p><strong>Status:</strong> Active</p>
               <button className="btn" onClick={() => setEditing(true)}>Edit Profile</button>
             </>
           ) : (
@@ -56,10 +47,6 @@ const StudentProfile = () => {
                 Phone
                 <input value={phone} onChange={(e) => setPhone(e.target.value)} />
               </label>
-              <label>
-                Date of Birth
-                <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
-              </label>
               <div style={{ marginTop: 10 }}>
                 <button className="btn btn-primary" onClick={handleSave}>Save</button>
                 <button className="btn" onClick={() => setEditing(false)} style={{ marginLeft: 8 }}>Cancel</button>
@@ -72,4 +59,4 @@ const StudentProfile = () => {
   );
 };
 
-export default StudentProfile;
+export default AdminProfile;

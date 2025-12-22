@@ -56,6 +56,12 @@ const InstitutionDashboard = () => {
           <Link to="/issue-certificate" className="btn btn-primary">
             Issue Certificate
           </Link>
+          <Link to="/institution-profile" className="btn" style={{ marginLeft: 8 }}>
+            Profile
+          </Link>
+          <Link to="/institution-account-settings" className="btn" style={{ marginLeft: 8 }}>
+            Account
+          </Link>
         </div>
 
         {/* Issued Certificates */}

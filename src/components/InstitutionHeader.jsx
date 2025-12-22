@@ -35,6 +35,20 @@ const InstitutionHeader = () => {
             Issue Certificate
           </Link>
 
+          <Link
+            to="/institution-profile"
+            className={location.pathname === "/institution-profile" ? "active" : ""}
+          >
+            Profile
+          </Link>
+
+          <Link
+            to="/institution-account-settings"
+            className={location.pathname === "/institution-account-settings" ? "active" : ""}
+          >
+            Account
+          </Link>
+
           <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>

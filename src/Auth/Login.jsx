@@ -7,46 +7,85 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     setError("");
     setLoading(true);
 
-    try {
-      let role = "STUDENT";
-      if (email.includes("admin")) role = "ADMIN";
-      else if (email.includes("inst")) role = "INSTITUTION";
-
-      const mockUser = {
-        name: "Demo User",
-        email,
-        role,
-      };
-
-      localStorage.setItem("token", "mock-token");
-      localStorage.setItem("user", JSON.stringify(mockUser));
-
-      if (role === "ADMIN") navigate("/admin-dashboard");
-      else if (role === "INSTITUTION") navigate("/institution-dashboard");
-      else navigate("/student-dashboard");
-    } catch (err) {
-      setError(err?.message || "Login failed");
-    } finally {
-      setLoading(false);
+    /* ================= ADMIN LOGIN ================= */
+    if (email === "admin@gmail.com") {
+      if (password === "admin123") {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: "System Admin",
+            email,
+            role: "ADMIN",
+          })
+        );
+        localStorage.setItem("token", "mock-admin-token");
+        navigate("/admin-dashboard");
+      } else {
+        setError("Invalid admin credentials");
+        setLoading(false);
+      }
+      return;
     }
+
+    /* ================= INSTITUTION LOGIN ================= */
+    if (email.includes("inst")) {
+      const requests =
+        JSON.parse(localStorage.getItem("institutionRequests")) || [];
+
+      const approvedInstitution = requests.find(
+        (req) => req.email === email && req.status === "APPROVED"
+      );
+
+      if (!approvedInstitution) {
+        setError("Institution not approved by admin");
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: approvedInstitution.name,
+          email,
+          role: "INSTITUTION",
+        })
+      );
+      localStorage.setItem("token", "mock-institution-token");
+      navigate("/institution-dashboard");
+      return;
+    }
+
+    /* ================= STUDENT LOGIN ================= */
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        name: "Demo Student",
+        email,
+        role: "STUDENT",
+      })
+    );
+    localStorage.setItem("token", "mock-student-token");
+    navigate("/student-dashboard");
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
         <h2>Login</h2>
-        <p>Access your academic credentials</p>
+        <p>Access your account</p>
 
         {error && <p className="error">{error}</p>}
 
         <input
+          type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -59,7 +98,11 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="btn btn-primary" onClick={handleLogin} disabled={loading}>
+        <button
+          className="btn btn-primary"
+          onClick={handleLogin}
+          disabled={loading}
+        >
           {loading ? "Logging in..." : "Login"}
         </button>
 
