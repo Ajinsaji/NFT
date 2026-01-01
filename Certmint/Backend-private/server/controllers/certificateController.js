@@ -1,5 +1,6 @@
-const Certificate = require("../models/Certificate");
+const Certificate = require("../models/certificate");
 const crypto = require("crypto");
+const generatePDF = require("../utils/generateCertificatePDF");
 
 /* ======================================================
    ISSUE CERTIFICATE (INSTITUTION)
@@ -28,8 +29,16 @@ exports.issueCertificate = async (req, res) => {
       .update(certificateCode + studentName + subject)
       .digest("hex");
 
+    // ✅ GENERATE PDF
+    const pdfUrl = generatePDF({
+      studentName,
+      subject,
+      institution: institutionName,
+    });
+
+    // ✅ CREATE CERTIFICATE WITH PDF
     const certificate = await Certificate.create({
-      student: null, // optional (if student exists later, can link)
+      student: null,
       institution: institutionId,
       subject,
       studentNameSnapshot: studentName,
@@ -37,6 +46,7 @@ exports.issueCertificate = async (req, res) => {
       institutionNameSnapshot: institutionName,
       certificateCode,
       blockchainTokenId,
+      pdfUrl, // 🔥 VERY IMPORTANT
     });
 
     res.status(201).json({

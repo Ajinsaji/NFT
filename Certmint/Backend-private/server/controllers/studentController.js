@@ -1,4 +1,4 @@
-const Certificate = require("../models/Certificate");
+const Certificate = require("../models/certificate");
 
 exports.getMyCertificates = async (req, res) => {
   const certs = await Certificate.find({
