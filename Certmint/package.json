@@ -1,0 +1,18 @@
+{
+  "name": "Certmint-monorepo",
+  "private": true,
+  "workspaces": [],
+  "scripts": {
+    "backend": "npm --prefix Backend-private run dev",
+    "frontend": "npm --prefix frontend start",
+    "dev": "concurrently \"npm:backend\" \"npm:frontend\""
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "concurrently": "^8.2.2",
+    "hardhat": "^3.1.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
+}
